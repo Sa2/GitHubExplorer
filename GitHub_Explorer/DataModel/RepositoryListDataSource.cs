@@ -57,13 +57,13 @@ namespace GitHub_Explorer.Data
         }
     }
 
-    public sealed class RepositoryDataSource
+    public sealed class RepositoryListDataSource
     {
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
         private GitHubClientService clientService = new GitHubClientService();
 
-        private static RepositoryDataSource _repositoryDataSource = new RepositoryDataSource();
+        private static RepositoryListDataSource _repositoryDataSource = new RepositoryListDataSource();
 
         private ObservableCollection<RepositoryDataGroup> _groups = new ObservableCollection<RepositoryDataGroup>();
 

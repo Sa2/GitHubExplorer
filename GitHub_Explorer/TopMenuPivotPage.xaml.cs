@@ -86,7 +86,7 @@ namespace GitHub_Explorer
 //            this.DefaultViewModel[FirstGroupName] = sampleDataGroup;
             try
             {
-                var repositoryDataGroup = await RepositoryDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
+                var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
                 this.DefaultViewModel[FirstGroupName] = repositoryDataGroup;
             }
             catch
@@ -152,7 +152,7 @@ namespace GitHub_Explorer
         /// </summary>
         private async void SecondPivot_Loaded(object sender, RoutedEventArgs e)
         {
-            var repositoryDataGroup = await RepositoryDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
+            var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
             this.DefaultViewModel[SecondGroupName] = repositoryDataGroup;
         }
 
@@ -167,7 +167,7 @@ namespace GitHub_Explorer
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
-            var repositoryDataGroup = await RepositoryDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
+            var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
             this.DefaultViewModel[FirstGroupName] = repositoryDataGroup;
         }
 
