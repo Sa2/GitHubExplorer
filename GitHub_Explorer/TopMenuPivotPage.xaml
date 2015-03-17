@@ -20,6 +20,7 @@
     </Page.Transitions>
 
     <Grid>
+        <ProgressBar x:Name="connectProgress" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0" IsIndeterminate="True"/>
         <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
             <!--ピボット アイテム 1-->
             <!--
@@ -58,11 +59,11 @@
             </PivotItem>
             -->
             <PivotItem
-                x:Uid="PivotItem1"
+                x:Uid="TopPivotItemRepositories"
                 Margin="19,14.5,0,0"
                 Header="first"
                 DataContext="{Binding FirstGroup}"
-                d:DataContext="{Binding Groups[0],Source={d:DesignData Type=data:RepositoryDataSource}}"
+                d:DataContext="{Binding Groups[0],Source={d:DesignData Type=data:RepositoryListDataSource}}"
                 CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <!--テキストの折り返しを行う 2 行リスト-->
                 <ListView
@@ -92,6 +93,7 @@
                 </ListView>
             </PivotItem>
         </Pivot>
+        
     </Grid>
 
     <Page.BottomAppBar>

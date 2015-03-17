@@ -26,6 +26,7 @@ using Octokit.Helpers;
 using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
+using GitHub_Explorer.NavigationParam;
 
 // ピボット アプリケーション テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=391641 を参照してください
 
@@ -84,15 +85,16 @@ namespace GitHub_Explorer
             // TODO: 対象となる問題領域に適したデータ モデルを作成し、サンプル データを置き換えます
 //            var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-1");
 //            this.DefaultViewModel[FirstGroupName] = sampleDataGroup;
-            try
-            {
-                var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
-                this.DefaultViewModel[FirstGroupName] = repositoryDataGroup;
-            }
-            catch
-            {
 
-            }
+//            try
+//            {
+//                var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
+//                this.DefaultViewModel[FirstGroupName] = repositoryDataGroup;
+//            }
+//            catch
+//            {
+
+//            }
         }
 
         /// <summary>
@@ -135,13 +137,14 @@ namespace GitHub_Explorer
         /// <summary>
         /// セクション内のアイテムがクリックされたときに呼び出されます。
         /// </summary>
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             // 適切な移動先のページに移動し、新しいページを構成します。
             // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            RepositoryInfoNaviParam param = new RepositoryInfoNaviParam(((RepositoryListDataItem)e.ClickedItem).OwnerName,
+                                                                        ((RepositoryListDataItem)e.ClickedItem).Name);
             //            Frame.Navigate(typeof(LoginContentDialog));
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
+            if (!Frame.Navigate(typeof(RepositoryInfoPage), param))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
@@ -158,19 +161,46 @@ namespace GitHub_Explorer
 
         private async void SignIn_Click(object sender, RoutedEventArgs e)
         {
-            var SignInContentDialog = new SignInContentDialog();
-            SignInContentDialog.ShowAsync();
+            try
+            {
+                var SignInContentDialog = new SignInContentDialog();
+                SignInContentDialog.ShowAsync();
+            }
+            catch
+            {
 
+            }
+            finally
+            {}
+            
 
         }
 
 
         private async void Update_Click(object sender, RoutedEventArgs e)
         {
-            var repositoryDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
-            this.DefaultViewModel[FirstGroupName] = repositoryDataGroup;
+            await SetRepositoryList();
         }
 
+        private async Task SetRepositoryList()
+        {
+            try
+            {
+                connectProgress.Visibility = Visibility.Visible;
+                var repositoryListDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
+                this.DefaultViewModel[FirstGroupName] = repositoryListDataGroup;
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                connectProgress.Visibility = Visibility.Collapsed;
+            }
+
+            return;
+        }
         #region NavigationHelper の登録
 
         /// <summary>

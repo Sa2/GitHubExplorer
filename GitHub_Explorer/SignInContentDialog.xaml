@@ -13,6 +13,7 @@
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ProgressBar x:Name="signInProgress" HorizontalAlignment="Left" Height="10" VerticalAlignment="Stretch" Width="0" IsIndeterminate="True"/>
         <TextBox x:Name="username" Header="Username"/>
         <PasswordBox  Name="password" Header="Password"/>
         <CheckBox Name="showPassword" Content="Show password"/>

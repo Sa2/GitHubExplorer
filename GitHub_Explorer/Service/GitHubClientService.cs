@@ -52,5 +52,13 @@ namespace GitHub_Explorer.Service
 
             return repositories;
         }
+
+        public async Task<IReadOnlyList<Issue>> FetchIssues(string owner, string name)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            IReadOnlyList<Issue> issues = github.Issue.GetForRepository(owner, name).Result;
+
+            return issues;
+        }
     }
 }

@@ -26,6 +26,7 @@ using Octokit.Helpers;
 using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
+using GitHub_Explorer.NavigationParam;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -36,16 +37,70 @@ namespace GitHub_Explorer
     /// </summary>
     public sealed partial class RepositoryInfoPage : Page
     {
-        private const string FirstGroupName = "FirstGroup";
+        private const string IssueGroupName = "IssueGroup";
         private const string SecondGroupName = "SecondGroup";
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
+        private string repositoryName;
+        private string repostioryOwner;
+
         public RepositoryInfoPage()
         {
             this.InitializeComponent();
+
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+        }
+
+        public NavigationHelper NavigationHelper
+        {
+            get { return this.navigationHelper; }
+        }
+
+        /// <summary>
+        /// この <see cref="Page"/> のビュー モデルを取得します。
+        /// これは厳密に型指定されたビュー モデルに変更できます。
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
+        }
+
+        /// <summary>
+        /// このページには、移動中に渡されるコンテンツを設定します。前のセッションからページを
+        /// 再作成する場合は、保存状態も指定されます。
+        /// </summary>
+        /// <param name="sender">
+        /// イベントのソース (通常、<see cref="NavigationHelper"/>)。
+        /// </param>
+        /// <param name="e">このページが最初に要求されたときに
+        /// <see cref="Frame.Navigate(Type, Object)"/> に渡されたナビゲーション パラメーターと、
+        /// 前のセッションでこのページによって保存された状態の辞書を提供する
+        /// イベント データ。ページに初めてアクセスするとき、状態は null になります。</param>
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        {
+            /// TODO: RepositoryNavigateParamクラスを配置するnamespaceを考える
+
+            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.NavigationParameter;
+;
+            LoadRepositoryInfo(param.Owner, param.Name);
+        }
+
+        /// <summary>
+        /// アプリケーションが中断される場合、またはページがナビゲーション キャッシュから破棄される場合、
+        /// このページに関連付けられた状態を保存します。値は、
+        /// <see cref="SuspensionManager.SessionState"/> のシリアル化の要件に準拠する必要があります。
+        /// </summary>
+        /// <param name="sender">イベントのソース (通常、<see cref="NavigationHelper"/>)。</param>
+        /// <param name="e">シリアル化可能な状態で作成される空のディクショナリを提供するイベント データ
+        ///。</param>
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+            // TODO: ページの一意の状態をここに保存します。
         }
 
         /// <summary>
@@ -53,8 +108,25 @@ namespace GitHub_Explorer
         /// </summary>
         /// <param name="e">このページにどのように到達したかを説明するイベント データ。
         /// このプロパティは、通常、ページを構成するために使用します。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+//            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.Parameter;
+            
+//            await LoadRepositoryInfo(param.Owner, param.Name);
+        }
+
+        private async Task LoadRepositoryInfo(string owner, string name)
+        {
+            try
+            {
+                var repositoryInfoDataGroup = await RepositoryInfoDataSource.GetGroupAsync("RepositoryInfo", owner, name);
+                this.DefaultViewModel[IssueGroupName] = repositoryInfoDataGroup;
+            }
+            catch(Exception e)
+            { }
+            finally
+            { }
+            return;
         }
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)

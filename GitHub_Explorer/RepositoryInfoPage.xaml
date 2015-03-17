@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Transitions>
         <TransitionCollection>
@@ -18,17 +19,21 @@
     </Page.Transitions>
 
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
             <PivotItem
-                x:Uid="PivotItem1"
+                x:Uid="RepositoryInfoPivotItem1"
                 Margin="19,14.5,0,0"
                 Header="first"
-                DataContext="{Binding FirstGroup}"
-                d:DataContext="{Binding Groups[0],Source={d:DesignData Type=data:RepositoryDataSource}}"
-                CommonNavigationTransitionInfo.IsStaggerElement="True">
+                DataContext="{Binding IssueGroup}"
+                CommonNavigationTransitionInfo.IsStaggerElement="True" >
                 <!--テキストの折り返しを行う 2 行リスト-->
                 <ListView
-                    ItemsSource="{Binding Items}"
+                    ItemsSource="{Binding Issues}"
                     IsItemClickEnabled="True"
                     ItemClick="ItemView_ItemClick"
                     ContinuumNavigationTransitionInfo.ExitElementContainer="True">
@@ -36,14 +41,14 @@
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,9.5">
                                 <TextBlock
-                                    Text="{Binding Name}"
+                                    Text="{Binding Title}"
                                     TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0,0,19,0"/>
                                 <TextBlock
-                                    Text="{Binding Description}"
+                                    Text="{Binding Body}"
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
                                     Style="{ThemeResource ListViewItemContentTextBlockStyle}"
