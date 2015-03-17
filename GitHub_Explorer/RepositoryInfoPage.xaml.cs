@@ -108,11 +108,11 @@ namespace GitHub_Explorer
         /// </summary>
         /// <param name="e">このページにどのように到達したかを説明するイベント データ。
         /// このプロパティは、通常、ページを構成するために使用します。</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-//            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.Parameter;
+            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.Parameter;
             
-//            await LoadRepositoryInfo(param.Owner, param.Name);
+            LoadRepositoryInfo(param.Owner, param.Name);
         }
 
         private async Task LoadRepositoryInfo(string owner, string name)
