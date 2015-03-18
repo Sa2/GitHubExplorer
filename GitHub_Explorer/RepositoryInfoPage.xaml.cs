@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -27,6 +28,7 @@ using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
+using Windows.System.Threading;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -44,8 +46,7 @@ namespace GitHub_Explorer
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
-        private string repositoryName;
-        private string repostioryOwner;
+        private RepositoryInfoNaviParam naviParam;
 
         public RepositoryInfoPage()
         {
@@ -86,7 +87,6 @@ namespace GitHub_Explorer
             /// TODO: RepositoryNavigateParamクラスを配置するnamespaceを考える
 
             RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.NavigationParameter;
-;
             LoadRepositoryInfo(param.Owner, param.Name);
         }
 
@@ -108,11 +108,16 @@ namespace GitHub_Explorer
         /// </summary>
         /// <param name="e">このページにどのように到達したかを説明するイベント データ。
         /// このプロパティは、通常、ページを構成するために使用します。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.Parameter;
-            
-            LoadRepositoryInfo(param.Owner, param.Name);
+            naviParam = e.Parameter as RepositoryInfoNaviParam;
+            pivot.Title = naviParam.Name;
+            await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
+        }
+
+        private async void SetRepositoryInfoData(object sender, RoutedEventArgs e)
+        {
+            await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
         }
 
         private async Task LoadRepositoryInfo(string owner, string name)

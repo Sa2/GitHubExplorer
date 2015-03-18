@@ -13,7 +13,7 @@
         <TransitionCollection>
             <NavigationThemeTransition>
                 <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True"/>
+                    <CommonNavigationTransitionInfo IsStaggeringEnabled="False"/>
                 </NavigationThemeTransition.DefaultNavigationTransitionInfo>
             </NavigationThemeTransition>
         </TransitionCollection>
@@ -21,7 +21,7 @@
 
     <Grid>
         <ProgressBar x:Name="connectProgress" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0" IsIndeterminate="True"/>
-        <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
+        <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="False">
             <!--ピボット アイテム 1-->
             <!--
             <PivotItem

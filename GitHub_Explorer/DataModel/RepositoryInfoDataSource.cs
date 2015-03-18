@@ -120,11 +120,11 @@ namespace GitHub_Explorer.Data
 //            if (this._groups.Count != 0)
 //                return;
 
-            Task<IReadOnlyList<Issue>> issues = clientService.FetchIssues(owner, name);
+            IReadOnlyList<Issue> issues = await clientService.FetchIssues(owner, name);
 
             RepositoryInfoDataGroup group = new RepositoryInfoDataGroup("RepositoryInfo", "リポジトリ情報");
 
-            foreach (Issue issue in issues.Result.Where(item => item.State.Equals(ItemState.Open)).OrderByDescending(item => item.Number))
+            foreach (Issue issue in issues.Where(item => item.State.Equals(ItemState.Open)).OrderByDescending(item => item.Number))
             {
                 group.Issues.Add(new IssueDataItem(issue.Number,
                                                     issue.Title,

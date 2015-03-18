@@ -56,7 +56,7 @@ namespace GitHub_Explorer.Service
         public async Task<IReadOnlyList<Issue>> FetchIssues(string owner, string name)
         {
             github = ClientSingleton.GetGitHubClient(null);
-            IReadOnlyList<Issue> issues = github.Issue.GetForRepository(owner, name).Result;
+            IReadOnlyList<Issue> issues = await github.Issue.GetForRepository(owner, name);
 
             return issues;
         }
