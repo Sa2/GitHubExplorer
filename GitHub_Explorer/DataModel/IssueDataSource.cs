@@ -57,10 +57,10 @@ namespace GitHub_Explorer.Data
         
     }
 
-    public class RepositoryInfoDataGroup
+    public class IssuesDataGroup
     {
         // MEMO: ここにリポジトリのOwnerやNameを持たせるべきか…
-        public RepositoryInfoDataGroup(string id, string name)
+        public IssuesDataGroup(string id, string name)
         {
             this.Id = id;
             this.Name = name;
@@ -77,52 +77,52 @@ namespace GitHub_Explorer.Data
             return this.Name;
         }
     }
-    public sealed class RepositoryInfoDataSource
+    public sealed class IssueDataSource
     {
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
         private GitHubClientService clientService = new GitHubClientService();
 
-        private static RepositoryInfoDataSource _repositoryInfoDataSource = new RepositoryInfoDataSource();
+        private static IssueDataSource _issueDataSource = new IssueDataSource();
 
-        private ObservableCollection<RepositoryInfoDataGroup> _groups = new ObservableCollection<RepositoryInfoDataGroup>();
+        private ObservableCollection<IssuesDataGroup> _groups = new ObservableCollection<IssuesDataGroup>();
 
-        public ObservableCollection<RepositoryInfoDataGroup> Groups
+        public ObservableCollection<IssuesDataGroup> Groups
         {
             get { return this._groups; }
         }
-        public static async Task<IEnumerable<RepositoryInfoDataGroup>> GetGroupAsync(string owner, string name)
+        public static async Task<IEnumerable<IssuesDataGroup>> GetGroupAsync(string owner, string name)
         {
-            await _repositoryInfoDataSource.GetRepositoryInfoDataAsync(owner, name);
+            await _issueDataSource.GetIssuesDataAsync(owner, name);
 
-            return _repositoryInfoDataSource.Groups;
+            return _issueDataSource.Groups;
         }
 
-        public static async Task<RepositoryInfoDataGroup> GetGroupAsync(string id, string owner, string name)
+        public static async Task<IssuesDataGroup> GetGroupAsync(string id, string owner, string name)
         {
-            await _repositoryInfoDataSource.GetRepositoryInfoDataAsync(owner, name);
-            var matches = _repositoryInfoDataSource.Groups.Where((group) => group.Id.Equals(id));
+            await _issueDataSource.GetIssuesDataAsync(owner, name);
+            var matches = _issueDataSource.Groups.Where((group) => group.Id.Equals(id));
             if (matches.Count() == 1) return matches.First();
             return null;
         }
 
         public static async Task<IssueDataItem> GetIssueAsync(int number, string owner, string name)
         {
-            await _repositoryInfoDataSource.GetRepositoryInfoDataAsync(owner, name);
-            var matches = _repositoryInfoDataSource.Groups.SelectMany((group) => group.Issues).Where((item) => item.Number.Equals(number));
+            await _issueDataSource.GetIssuesDataAsync(owner, name);
+            var matches = _issueDataSource.Groups.SelectMany((group) => group.Issues).Where((item) => item.Number.Equals(number));
             if (matches.Count() == 1) return matches.First();
 
             return null;
         }
 
-        public async Task GetRepositoryInfoDataAsync(string owner, string name)
+        public async Task GetIssuesDataAsync(string owner, string name)
         {
 //            if (this._groups.Count != 0)
 //                return;
 
             IReadOnlyList<Issue> issues = await clientService.FetchIssues(owner, name);
 
-            RepositoryInfoDataGroup group = new RepositoryInfoDataGroup("RepositoryInfo", "リポジトリ情報");
+            IssuesDataGroup group = new IssuesDataGroup(resourceLoader.GetString("PivotGroupIdIssues"), resourceLoader.GetString("PivotGroupNameIssues"));
 
             foreach (Issue issue in issues.Where(item => item.State.Equals(ItemState.Open)).OrderByDescending(item => item.Number))
             {

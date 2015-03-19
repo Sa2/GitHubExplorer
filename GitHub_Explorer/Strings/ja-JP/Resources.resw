@@ -138,9 +138,17 @@
   <data name="Pivot.Title" xml:space="preserve">
     <value>GitHub Explorer</value>
   </data>
+  <data name="PivotGroupIdIssues" xml:space="preserve">
+    <value>Issues</value>
+    <comment>PivotにIssue一覧を表示するときに指定するグループID</comment>
+  </data>
   <data name="PivotGroupIdRepositories" xml:space="preserve">
     <value>Repositories</value>
     <comment>Pivotにリポジトリ一覧を表示するときに指定するグループID</comment>
+  </data>
+  <data name="PivotGroupNameIssues" xml:space="preserve">
+    <value>Issue一覧</value>
+    <comment>PivotにIssue一覧を表示するときに指定するグループ名</comment>
   </data>
   <data name="PivotGroupNameRepositories" xml:space="preserve">
     <value>リポジトリ一覧</value>

@@ -48,7 +48,7 @@ namespace GitHub_Explorer.Service
         public async Task<IReadOnlyList<Repository>> FetchUserRepositories(string userId)
         {
             github = ClientSingleton.GetGitHubClient(null);
-            IReadOnlyList<Repository> repositories = github.Repository.GetAllForUser(userId).Result;
+            IReadOnlyList<Repository> repositories = await github.Repository.GetAllForUser(userId);
 
             return repositories;
         }

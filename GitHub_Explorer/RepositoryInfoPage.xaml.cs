@@ -39,7 +39,7 @@ namespace GitHub_Explorer
     /// </summary>
     public sealed partial class RepositoryInfoPage : Page
     {
-        private const string IssueGroupName = "IssueGroup";
+        private const string IssuesGroupName = "IssueGroup";
         private const string SecondGroupName = "SecondGroup";
 
         private readonly NavigationHelper navigationHelper;
@@ -124,8 +124,8 @@ namespace GitHub_Explorer
         {
             try
             {
-                var repositoryInfoDataGroup = await RepositoryInfoDataSource.GetGroupAsync("RepositoryInfo", owner, name);
-                this.DefaultViewModel[IssueGroupName] = repositoryInfoDataGroup;
+                var IssuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
+                this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
             }
             catch(Exception e)
             { }
