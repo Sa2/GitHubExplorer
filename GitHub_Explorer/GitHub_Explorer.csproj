@@ -80,6 +80,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="IssueInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,6 +112,9 @@
     <Compile Include="DataModel\IssueDataSource.cs" />
     <Compile Include="DataModel\RepositoryListDataSource.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="IssueInfoPage.xaml.cs">
+      <DependentUpon>IssueInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
