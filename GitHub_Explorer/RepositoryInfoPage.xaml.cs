@@ -124,7 +124,7 @@ namespace GitHub_Explorer
         {
             try
             {
-                var IssuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
+                var IssuesDataGroup = await IssueListDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
                 this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
             }
             catch(Exception e)
@@ -138,9 +138,9 @@ namespace GitHub_Explorer
         {
             // 適切な移動先のページに移動し、新しいページを構成します。
             // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            var itemId = ((IssueDataItem)e.ClickedItem).Number;
             //            Frame.Navigate(typeof(LoginContentDialog));
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
+            if (!Frame.Navigate(typeof(IssueInfoPage), itemId))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

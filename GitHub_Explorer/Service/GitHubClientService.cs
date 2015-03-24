@@ -60,5 +60,20 @@ namespace GitHub_Explorer.Service
 
             return issues;
         }
+
+        public async Task<Issue> FetchIssue(string owner, string name, int number)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            Issue issue = await github.Issue.Get(owner, name, number);
+
+            return issue;
+        }
+        public async Task<IReadOnlyList<IssueComment>> FetchIssueComments(string owner, string name, int number)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            IReadOnlyList<IssueComment> issueComments = await github.Issue.Comment.GetForIssue(owner, name, number);
+
+            return issueComments;
+        }
     }
 }

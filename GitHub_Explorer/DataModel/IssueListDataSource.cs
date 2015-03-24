@@ -15,47 +15,7 @@ using GitHub_Explorer.Service;
 
 namespace GitHub_Explorer.Data
 {
-    public class IssueDataItem
-    {
-        public IssueDataItem(int number, string title, string body, ItemState state, IReadOnlyList<Label> labels,
-                             Milestone milestone, int comments, User assignee, Uri htmlUrl, User user, DateTimeOffset createdAt, DateTimeOffset? closedAt)
-        {
-            this.Number = number;
-            this.Title = title;
-            this.Body = body;
-            this.State = state;
-            this.Labels = labels;
-            this.Milestone = milestone;
-            this.Comments = comments;
-            this.Assignee = assignee;
-            this.HtmlUrl = htmlUrl;
-            this.User = user;
-            this.CreatedAt = createdAt;
-            this.ClosedAt = closedAt;
-            
-        }
-        // issueの中身を知るために作成したオブジェクト
-        Issue issue = new Issue();
-
-        public int Number { get; private set; }
-        public string Title { get; private set; }
-        public string Body { get; private set; }
-        public ItemState State { get; private set; }
-        public IReadOnlyList<Label> Labels { get; private set; }
-        public Milestone Milestone { get; private set; }
-        public int Comments { get; private set; }
-        public User Assignee { get; private set; }
-        public Uri HtmlUrl { get; private set; }
-        public User User { get; private set; }
-        public DateTimeOffset CreatedAt { get; private set; }
-        public DateTimeOffset? ClosedAt { get; private set; }
-
-        public override string ToString()
-        {
-            return this.Title;
-        }
-        
-    }
+    
 
     public class IssuesDataGroup
     {
@@ -77,13 +37,13 @@ namespace GitHub_Explorer.Data
             return this.Name;
         }
     }
-    public sealed class IssueDataSource
+    public sealed class IssueListDataSource
     {
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
         private GitHubClientService clientService = new GitHubClientService();
 
-        private static IssueDataSource _issueDataSource = new IssueDataSource();
+        private static IssueListDataSource _issueDataSource = new IssueListDataSource();
 
         private ObservableCollection<IssuesDataGroup> _groups = new ObservableCollection<IssuesDataGroup>();
 
@@ -106,7 +66,7 @@ namespace GitHub_Explorer.Data
             return null;
         }
 
-        public static async Task<IssueDataItem> GetIssueAsync(int number, string owner, string name)
+        public static async Task<IssueDataItem> GetIssueAsync(string owner, string name, int number)
         {
             await _issueDataSource.GetIssuesDataAsync(owner, name);
             var matches = _issueDataSource.Groups.SelectMany((group) => group.Issues).Where((item) => item.Number.Equals(number));
