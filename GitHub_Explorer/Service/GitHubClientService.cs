@@ -48,9 +48,32 @@ namespace GitHub_Explorer.Service
         public async Task<IReadOnlyList<Repository>> FetchUserRepositories(string userId)
         {
             github = ClientSingleton.GetGitHubClient(null);
-            IReadOnlyList<Repository> repositories = github.Repository.GetAllForUser(userId).Result;
+            IReadOnlyList<Repository> repositories = await github.Repository.GetAllForUser(userId);
 
             return repositories;
+        }
+
+        public async Task<IReadOnlyList<Issue>> FetchIssues(string owner, string name)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            IReadOnlyList<Issue> issues = await github.Issue.GetForRepository(owner, name);
+
+            return issues;
+        }
+
+        public async Task<Issue> FetchIssue(string owner, string name, int number)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            Issue issue = await github.Issue.Get(owner, name, number);
+
+            return issue;
+        }
+        public async Task<IReadOnlyList<IssueComment>> FetchIssueComments(string owner, string name, int number)
+        {
+            github = ClientSingleton.GetGitHubClient(null);
+            IReadOnlyList<IssueComment> issueComments = await github.Issue.Comment.GetForIssue(owner, name, number);
+
+            return issueComments;
         }
     }
 }

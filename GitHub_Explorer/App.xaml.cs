@@ -65,6 +65,9 @@ namespace GitHub_Explorer
                 // フレームを SuspensionManager キーに関連付けます。
                 SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
 
+                // 既定の言語を設定します。
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+
                 // TODO: この値をアプリケーションに適切なキャッシュ サイズに変更します。
                 rootFrame.CacheSize = 1;
 

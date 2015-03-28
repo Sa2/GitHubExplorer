@@ -138,23 +138,34 @@
   <data name="Pivot.Title" xml:space="preserve">
     <value>GitHub Explorer</value>
   </data>
+  <data name="PivotGroupIdIssues" xml:space="preserve">
+    <value>Issues</value>
+    <comment>PivotにIssue一覧を表示するときに指定するグループID</comment>
+  </data>
   <data name="PivotGroupIdRepositories" xml:space="preserve">
     <value>Repositories</value>
     <comment>Pivotにリポジトリ一覧を表示するときに指定するグループID</comment>
+  </data>
+  <data name="PivotGroupNameIssues" xml:space="preserve">
+    <value>Issue一覧</value>
+    <comment>PivotにIssue一覧を表示するときに指定するグループ名</comment>
   </data>
   <data name="PivotGroupNameRepositories" xml:space="preserve">
     <value>リポジトリ一覧</value>
     <comment>Pivotにリポジトリ一覧を表示するときに指定するグループ名</comment>
   </data>
-  <data name="PivotItem1.Header" xml:space="preserve">
-    <value>Repositories</value>
-  </data>
-  <data name="PivotItem2.Header" xml:space="preserve">
-    <value>Notification</value>
-  </data>
   <data name="RegisteredAppName" xml:space="preserve">
     <value>GitHubExplorer</value>
     <comment>GitHubに申請したアプリの名前</comment>
+  </data>
+  <data name="RepositoryInfoPivotItem1.Header" xml:space="preserve">
+    <value>issues</value>
+  </data>
+  <data name="RepositoryInfoPivotItem2.Header" xml:space="preserve">
+    <value>Pull Requests</value>
+  </data>
+  <data name="RepositoryInfoPivotItem3.Header" xml:space="preserve">
+    <value>branches</value>
   </data>
   <data name="SecondaryButton1.Label" xml:space="preserve">
     <value>GitHub Sign in</value>
@@ -176,6 +187,12 @@
   <data name="SignInSuccessfulMsg" xml:space="preserve">
     <value>サインインしました！</value>
     <comment>サインインに成功したときのメッセージ</comment>
+  </data>
+  <data name="TopPivotItemNotification.Header" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TopPivotItemRepositories.Header" xml:space="preserve">
+    <value>Repositories</value>
   </data>
   <data name="UpdateAppBarButton.Label" xml:space="preserve">
     <value>アップデート</value>

@@ -13,14 +13,15 @@
         <TransitionCollection>
             <NavigationThemeTransition>
                 <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <CommonNavigationTransitionInfo IsStaggeringEnabled="True"/>
+                    <CommonNavigationTransitionInfo IsStaggeringEnabled="False"/>
                 </NavigationThemeTransition.DefaultNavigationTransitionInfo>
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
 
     <Grid>
-        <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
+        <ProgressBar x:Name="connectProgress" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0" IsIndeterminate="True"/>
+        <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="False">
             <!--ピボット アイテム 1-->
             <!--
             <PivotItem
@@ -58,11 +59,11 @@
             </PivotItem>
             -->
             <PivotItem
-                x:Uid="PivotItem1"
+                x:Uid="TopPivotItemRepositories"
                 Margin="19,14.5,0,0"
                 Header="first"
                 DataContext="{Binding FirstGroup}"
-                d:DataContext="{Binding Groups[0],Source={d:DesignData Type=data:RepositoryDataSource}}"
+                d:DataContext="{Binding Groups[0],Source={d:DesignData Type=data:RepositoryListDataSource}}"
                 CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <!--テキストの折り返しを行う 2 行リスト-->
                 <ListView
@@ -75,7 +76,6 @@
                             <StackPanel Margin="0,0,0,9.5">
                                 <TextBlock
                                     Text="{Binding Name}"
-                                    TextWrapping="Wrap"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
@@ -92,6 +92,7 @@
                 </ListView>
             </PivotItem>
         </Pivot>
+        
     </Grid>
 
     <Page.BottomAppBar>
@@ -101,6 +102,7 @@
             <AppBarButton x:Uid="UpdateAppBarButton" x:Name="UpdateButton1" Label="Update" Icon="Sync" Click="Update_Click"/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Uid="SecondaryButton1" x:Name="SignInButton" Label="SignIn button" Click="SignIn_Click"/>
+                <AppBarButton x:Uid="Test1" x:Name="TestButton" Label="Test button" Click="Test_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

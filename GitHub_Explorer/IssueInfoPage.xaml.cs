@@ -2,10 +2,15 @@
 using GitHub_Explorer.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
+using System.Diagnostics;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -16,31 +21,42 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
+using Octokit;
+using Octokit.Helpers;
+using Octokit.Internal;
+using Octokit.Reflection;
+using GitHub_Explorer.Service;
+using GitHub_Explorer.NavigationParam;
+using Windows.System.Threading;
 
-// ピボット アプリケーション テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=391641 を参照してください
+// 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
 namespace GitHub_Explorer
 {
     /// <summary>
-    /// グループ内の単一のアイテムの詳細を表示するページ。
+    /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class ItemPage : Page
+    public sealed partial class IssueInfoPage : Page
     {
+        private const string IssueInfoGroupName = "IssueInfoGroup";
+        private const string IssueCommentsGroupName = "IssueCommentsGroup";
+
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
-        public ItemPage()
+        private IssueInfoNaviParam naviParam;
+
+        public IssueInfoPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        } 
+        }
 
-        /// <summary>
-        /// この <see cref="Page"/> に関連付けられた <see cref="NavigationHelper"/> を取得します。
-        /// </summary>
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -68,9 +84,6 @@ namespace GitHub_Explorer
         /// イベント データ。ページに初めてアクセスするとき、状態は null になります。</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: 対象となる問題領域に適したデータ モデルを作成し、サンプル データを置き換えます。
-//            var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
-//            this.DefaultViewModel["Item"] = item;
         }
 
         /// <summary>
@@ -86,24 +99,16 @@ namespace GitHub_Explorer
             // TODO: ページの一意の状態をここに保存します。
         }
 
-        #region NavigationHelper の登録
-
         /// <summary>
-        /// このセクションに示したメソッドは、NavigationHelper がページの
-        /// ナビゲーション メソッドに応答できるようにするためにのみ使用します。
-        /// <para>
-        /// ページ固有のロジックは、
-        /// <see cref="NavigationHelper.LoadState"/>
-        /// および <see cref="NavigationHelper.SaveState"/>。
-        /// LoadState メソッドでは、前のセッションで保存されたページの状態に加え、
-        /// ナビゲーション パラメーターを使用できます。
-        /// </para>
+        /// このページがフレームに表示されるときに呼び出されます。
         /// </summary>
-        /// <param name="e">ナビゲーション要求を取り消すことのできないナビゲーション メソッドおよびイベント
-        /// ハンドラーにデータを提供します。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// <param name="e">このページにどのように到達したかを説明するイベント データ。
+        /// このプロパティは、通常、ページを構成するために使用します。</param>
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            naviParam = e.Parameter as IssueInfoNaviParam;
             this.navigationHelper.OnNavigatedTo(e);
+            await LoadIssueInfo(naviParam.Owner, naviParam.Name, naviParam.Number);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -111,6 +116,33 @@ namespace GitHub_Explorer
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
-        #endregion
+        private async Task LoadIssueInfo(string owner, string name, int number)
+        {
+            try
+            {
+                var IssueInfoDataItem = await IssueDataSource.GetIssueAsync(owner, name, number);
+
+                this.DefaultViewModel[IssueInfoGroupName] = IssueInfoDataItem;
+            }
+            catch (Exception e)
+            { }
+            finally
+            { }
+            return;
+        }
+
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // 適切な移動先のページに移動し、新しいページを構成します。
+            // このとき、必要な情報をナビゲーション パラメーターとして渡します
+            var itemId = ((IssueDataItem)e.ClickedItem).Number;
+            //            Frame.Navigate(typeof(LoginContentDialog));
+            if (!Frame.Navigate(typeof(IssueInfoPage), itemId))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+
+
     }
 }

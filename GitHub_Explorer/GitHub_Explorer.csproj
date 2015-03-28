@@ -80,9 +80,17 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="IssueInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RepositoryInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TopMenuPivotPage.xaml">
       <SubType>Designer</SubType>
@@ -101,10 +109,20 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="DataModel\RepositoryDataSource.cs" />
+    <Compile Include="DataModel\IssueRelativeDataItem.cs" />
+    <Compile Include="DataModel\IssueCommentDataSource.cs" />
+    <Compile Include="DataModel\IssueDataSource.cs" />
+    <Compile Include="DataModel\RepositoryListDataSource.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="IssueInfoPage.xaml.cs">
+      <DependentUpon>IssueInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationParam\NavigationParam.cs" />
+    <Compile Include="RepositoryInfoPage.xaml.cs">
+      <DependentUpon>RepositoryInfoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TopMenuPivotPage.xaml.cs">
       <DependentUpon>TopMenuPivotPage.xaml</DependentUpon>
