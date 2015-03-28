@@ -20,9 +20,9 @@ using System.Threading.Tasks;
 
 namespace GitHub_Explorer.Data
 {
-    public class IssueInfoDataGroup
+    public class IssueCommentDataGroup
     {
-        public IssueInfoDataGroup(string id, string name)
+        public IssueCommentDataGroup(string id, string name)
         {
             this.Id = id;
             this.Name = name;
@@ -42,7 +42,19 @@ namespace GitHub_Explorer.Data
         }
     }
 
-    public class IssueInfoDataSource
+    public class IssueCommentDataSource
     {
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+
+        private GitHubClientService clientService = new GitHubClientService();
+
+        private static IssueCommentDataSource _issueCommentDataSource = new IssueCommentDataSource();
+
+        private ObservableCollection<IssueCommentDataGroup> _groups = new ObservableCollection<IssueCommentDataGroup>();
+
+        public ObservableCollection<IssueCommentDataGroup> Group
+        {
+            get { return this._groups; }
+        }
     }
 }

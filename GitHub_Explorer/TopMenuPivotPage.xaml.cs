@@ -226,6 +226,18 @@ namespace GitHub_Explorer
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
+        private async void Test_Click(object sender, RoutedEventArgs e)
+        {
+            // 適切な移動先のページに移動し、新しいページを構成します。
+            // このとき、必要な情報をナビゲーション パラメーターとして渡します
+            var param = 12;
+            //            Frame.Navigate(typeof(LoginContentDialog));
+            if (!Frame.Navigate(typeof(ItemPage), param))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+
         #endregion
     }
 }

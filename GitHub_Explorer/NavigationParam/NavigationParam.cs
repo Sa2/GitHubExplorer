@@ -21,4 +21,17 @@ namespace GitHub_Explorer.NavigationParam
         public string Name { get; private set; }
 
     }
+
+    public class IssueInfoNaviParam
+    {
+        public IssueInfoNaviParam(string owner, string name, int number)
+        {
+            this.Owner = owner;
+            this.Name = name;
+            this.Number = number;
+        }
+        public string Owner { get; private set; }
+        public string Name { get; private set; }
+        public int Number { get; private set; }
+    }
 }

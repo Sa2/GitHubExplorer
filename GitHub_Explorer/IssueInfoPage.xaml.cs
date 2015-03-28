@@ -39,13 +39,14 @@ namespace GitHub_Explorer
     /// </summary>
     public sealed partial class IssueInfoPage : Page
     {
-        private const string IssuesGroupName = "IssueGroup";
-        private const string SecondGroupName = "SecondGroup";
+        private const string IssueInfoGroupName = "IssueInfoGroup";
+        private const string IssueCommentsGroupName = "IssueCommentsGroup";
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
+        private IssueInfoNaviParam naviParam;
 
         public IssueInfoPage()
         {
@@ -105,14 +106,23 @@ namespace GitHub_Explorer
         /// このプロパティは、通常、ページを構成するために使用します。</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            naviParam = e.Parameter as IssueInfoNaviParam;
+            this.navigationHelper.OnNavigatedTo(e);
+            await LoadIssueInfo(naviParam.Owner, naviParam.Name, naviParam.Number);
         }
 
-        private async Task LoadRepositoryInfo(string owner, string name)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedFrom(e);
+        }
+
+        private async Task LoadIssueInfo(string owner, string name, int number)
         {
             try
             {
-                var IssuesDataGroup = await IssueListDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
-                this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
+                var IssueInfoDataItem = await IssueDataSource.GetIssueAsync(owner, name, number);
+
+                this.DefaultViewModel[IssueInfoGroupName] = IssueInfoDataItem;
             }
             catch (Exception e)
             { }

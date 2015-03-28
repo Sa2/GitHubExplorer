@@ -69,8 +69,8 @@ namespace GitHub_Explorer
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: 対象となる問題領域に適したデータ モデルを作成し、サンプル データを置き換えます。
-            var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
-            this.DefaultViewModel["Item"] = item;
+//            var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
+//            this.DefaultViewModel["Item"] = item;
         }
 
         /// <summary>

@@ -17,10 +17,10 @@ namespace GitHub_Explorer.Data
 {
     
 
-    public class IssuesDataGroup
+    public class IssueDataGroup
     {
         // MEMO: ここにリポジトリのOwnerやNameを持たせるべきか…
-        public IssuesDataGroup(string id, string name)
+        public IssueDataGroup(string id, string name)
         {
             this.Id = id;
             this.Name = name;
@@ -37,28 +37,28 @@ namespace GitHub_Explorer.Data
             return this.Name;
         }
     }
-    public sealed class IssueListDataSource
+    public sealed class IssueDataSource
     {
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
         private GitHubClientService clientService = new GitHubClientService();
 
-        private static IssueListDataSource _issueDataSource = new IssueListDataSource();
+        private static IssueDataSource _issueDataSource = new IssueDataSource();
 
-        private ObservableCollection<IssuesDataGroup> _groups = new ObservableCollection<IssuesDataGroup>();
+        private ObservableCollection<IssueDataGroup> _groups = new ObservableCollection<IssueDataGroup>();
 
-        public ObservableCollection<IssuesDataGroup> Groups
+        public ObservableCollection<IssueDataGroup> Groups
         {
             get { return this._groups; }
         }
-        public static async Task<IEnumerable<IssuesDataGroup>> GetGroupAsync(string owner, string name)
+        public static async Task<IEnumerable<IssueDataGroup>> GetGroupAsync(string owner, string name)
         {
             await _issueDataSource.GetIssuesDataAsync(owner, name);
 
             return _issueDataSource.Groups;
         }
 
-        public static async Task<IssuesDataGroup> GetGroupAsync(string id, string owner, string name)
+        public static async Task<IssueDataGroup> GetGroupAsync(string id, string owner, string name)
         {
             await _issueDataSource.GetIssuesDataAsync(owner, name);
             var matches = _issueDataSource.Groups.Where((group) => group.Id.Equals(id));
@@ -82,7 +82,7 @@ namespace GitHub_Explorer.Data
 
             IReadOnlyList<Issue> issues = await clientService.FetchIssues(owner, name);
 
-            IssuesDataGroup group = new IssuesDataGroup(resourceLoader.GetString("PivotGroupIdIssues"), resourceLoader.GetString("PivotGroupNameIssues"));
+            IssueDataGroup group = new IssueDataGroup(resourceLoader.GetString("PivotGroupIdIssues"), resourceLoader.GetString("PivotGroupNameIssues"));
 
             foreach (Issue issue in issues.Where(item => item.State.Equals(ItemState.Open)).OrderByDescending(item => item.Number))
             {

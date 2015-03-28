@@ -57,6 +57,9 @@ namespace GitHub_Explorer
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
+        /// <summary>
+        /// この <see cref="Page"/> に関連付けられた <see cref="NavigationHelper"/> を取得します。
+        /// </summary>
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -84,10 +87,9 @@ namespace GitHub_Explorer
         /// イベント データ。ページに初めてアクセスするとき、状態は null になります。</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            /// TODO: RepositoryNavigateParamクラスを配置するnamespaceを考える
-
-            RepositoryInfoNaviParam param = (RepositoryInfoNaviParam)e.NavigationParameter;
-            LoadRepositoryInfo(param.Owner, param.Name);
+            naviParam = e.NavigationParameter as RepositoryInfoNaviParam;
+            pivot.Title = naviParam.Name;
+            await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
         }
 
         /// <summary>
@@ -110,21 +112,21 @@ namespace GitHub_Explorer
         /// このプロパティは、通常、ページを構成するために使用します。</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            this.navigationHelper.OnNavigatedTo(e);
             naviParam = e.Parameter as RepositoryInfoNaviParam;
             pivot.Title = naviParam.Name;
             await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
         }
-
-        private async void SetRepositoryInfoData(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
+            this.navigationHelper.OnNavigatedFrom(e);
         }
 
         private async Task LoadRepositoryInfo(string owner, string name)
         {
             try
             {
-                var IssuesDataGroup = await IssueListDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
+                var IssuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
                 this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
             }
             catch(Exception e)
@@ -138,9 +140,8 @@ namespace GitHub_Explorer
         {
             // 適切な移動先のページに移動し、新しいページを構成します。
             // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            var itemId = ((IssueDataItem)e.ClickedItem).Number;
-            //            Frame.Navigate(typeof(LoginContentDialog));
-            if (!Frame.Navigate(typeof(IssueInfoPage), itemId))
+            IssueInfoNaviParam param = new IssueInfoNaviParam(naviParam.Owner, naviParam.Name, ((IssueDataItem)e.ClickedItem).Number);
+            if (!Frame.Navigate(typeof(IssueInfoPage), param))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
