@@ -102,7 +102,6 @@
             <AppBarButton x:Uid="UpdateAppBarButton" x:Name="UpdateButton1" Label="Update" Icon="Sync" Click="Update_Click"/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Uid="SecondaryButton1" x:Name="SignInButton" Label="SignIn button" Click="SignIn_Click"/>
-                <AppBarButton x:Uid="Test1" x:Name="TestButton" Label="Test button" Click="Test_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

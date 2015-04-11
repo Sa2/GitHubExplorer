@@ -29,6 +29,7 @@ using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
 using Windows.System.Threading;
+using Newtonsoft.Json;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -106,8 +107,9 @@ namespace GitHub_Explorer
         /// このプロパティは、通常、ページを構成するために使用します。</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            naviParam = e.Parameter as IssueInfoNaviParam;
             this.navigationHelper.OnNavigatedTo(e);
+            string jsonParam = e.Parameter as string;
+            naviParam = JsonConvert.DeserializeObject<IssueInfoNaviParam>(jsonParam);
             await LoadIssueInfo(naviParam.Owner, naviParam.Name, naviParam.Number);
         }
 

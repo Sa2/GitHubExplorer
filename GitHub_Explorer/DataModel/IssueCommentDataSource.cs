@@ -12,11 +12,6 @@ using Octokit.Helpers;
 using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitHub_Explorer.Data
 {

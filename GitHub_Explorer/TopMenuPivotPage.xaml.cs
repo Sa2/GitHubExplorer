@@ -27,6 +27,7 @@ using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
+using Newtonsoft.Json;
 
 // ピボット アプリケーション テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=391641 を参照してください
 
@@ -141,10 +142,10 @@ namespace GitHub_Explorer
         {
             // 適切な移動先のページに移動し、新しいページを構成します。
             // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            RepositoryInfoNaviParam param = new RepositoryInfoNaviParam(((RepositoryListDataItem)e.ClickedItem).OwnerName,
+            RepositoryInfoNaviParam objectParam = new RepositoryInfoNaviParam(((RepositoryListDataItem)e.ClickedItem).OwnerName,
                                                                         ((RepositoryListDataItem)e.ClickedItem).Name);
-            //            Frame.Navigate(typeof(LoginContentDialog));
-            if (!Frame.Navigate(typeof(RepositoryInfoPage), param))
+            string jsonParam = JsonConvert.SerializeObject(objectParam);
+            if (!Frame.Navigate(typeof(RepositoryInfoPage), jsonParam))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
@@ -224,18 +225,6 @@ namespace GitHub_Explorer
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
-        }
-
-        private async void Test_Click(object sender, RoutedEventArgs e)
-        {
-            // 適切な移動先のページに移動し、新しいページを構成します。
-            // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            var param = 12;
-            //            Frame.Navigate(typeof(LoginContentDialog));
-            if (!Frame.Navigate(typeof(ItemPage), param))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
         }
 
         #endregion
