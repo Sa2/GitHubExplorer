@@ -29,6 +29,7 @@ using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
 using Windows.System.Threading;
+using Newtonsoft.Json;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -87,9 +88,6 @@ namespace GitHub_Explorer
         /// イベント データ。ページに初めてアクセスするとき、状態は null になります。</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            naviParam = e.NavigationParameter as RepositoryInfoNaviParam;
-            pivot.Title = naviParam.Name;
-            await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
         }
 
         /// <summary>
@@ -113,7 +111,8 @@ namespace GitHub_Explorer
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            naviParam = e.Parameter as RepositoryInfoNaviParam;
+            string jsonParam = e.Parameter as string;
+            naviParam = JsonConvert.DeserializeObject<RepositoryInfoNaviParam>(jsonParam);
             pivot.Title = naviParam.Name;
             await LoadRepositoryInfo(naviParam.Owner, naviParam.Name);
         }
@@ -140,8 +139,10 @@ namespace GitHub_Explorer
         {
             // 適切な移動先のページに移動し、新しいページを構成します。
             // このとき、必要な情報をナビゲーション パラメーターとして渡します
-            IssueInfoNaviParam param = new IssueInfoNaviParam(naviParam.Owner, naviParam.Name, ((IssueDataItem)e.ClickedItem).Number);
-            if (!Frame.Navigate(typeof(IssueInfoPage), param))
+            IssueInfoNaviParam objectParam = new IssueInfoNaviParam(naviParam.Owner, naviParam.Name, ((IssueDataItem)e.ClickedItem).Number);
+            string jsonParam = JsonConvert.SerializeObject(objectParam);
+
+            if (!Frame.Navigate(typeof(IssueInfoPage), jsonParam))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
