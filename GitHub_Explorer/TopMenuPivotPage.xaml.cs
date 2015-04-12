@@ -187,7 +187,6 @@ namespace GitHub_Explorer
         {
             try
             {
-                connectProgress.Visibility = Visibility.Visible;
                 var repositoryListDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
                 this.DefaultViewModel[FirstGroupName] = repositoryListDataGroup;
             }
@@ -197,7 +196,7 @@ namespace GitHub_Explorer
             }
             finally
             {
-                connectProgress.Visibility = Visibility.Collapsed;
+
             }
 
             return;

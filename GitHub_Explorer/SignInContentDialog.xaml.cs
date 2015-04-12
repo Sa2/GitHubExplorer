@@ -42,19 +42,14 @@ namespace GitHub_Explorer
 
             if (username.Text != "" && password.Password != "")
             {
-                signInProgress.Visibility = Visibility.Visible;
                 github = new GitHubClientService();
                 Credentials credentials = new Credentials(username.Text, password.Password);
                 message = await github.SignIn(credentials);
             }
             else
             {
-                signInProgress.Visibility = Visibility.Collapsed;
                 message = this.resourceLoader.GetString("SignInInputErrorMsg");
             }
-
-            
-            
 
             var messageDialog = new MessageDialog(message);
 
