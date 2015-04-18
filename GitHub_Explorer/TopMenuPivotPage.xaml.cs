@@ -28,6 +28,7 @@ using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
 using Newtonsoft.Json;
+using Windows.UI.ViewManagement;
 
 // ピボット アプリケーション テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=391641 を参照してください
 
@@ -41,6 +42,8 @@ namespace GitHub_Explorer
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+
+        StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
 
         public TopMenuPivotPage()
         {
@@ -173,8 +176,6 @@ namespace GitHub_Explorer
             }
             finally
             {}
-            
-
         }
 
 
@@ -187,7 +188,8 @@ namespace GitHub_Explorer
         {
             try
             {
-                connectProgress.Visibility = Visibility.Visible;
+                statusBar.ProgressIndicator.Text = "Fetching repository list...";
+                statusBar.ProgressIndicator.ShowAsync();
                 var repositoryListDataGroup = await RepositoryListDataSource.GetGroupAsync(this.resourceLoader.GetString("PivotGroupIdRepositories"));
                 this.DefaultViewModel[FirstGroupName] = repositoryListDataGroup;
             }
@@ -197,7 +199,7 @@ namespace GitHub_Explorer
             }
             finally
             {
-                connectProgress.Visibility = Visibility.Collapsed;
+                statusBar.ProgressIndicator.HideAsync();
             }
 
             return;

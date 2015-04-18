@@ -30,6 +30,7 @@ using GitHub_Explorer.Service;
 using GitHub_Explorer.NavigationParam;
 using Windows.System.Threading;
 using Newtonsoft.Json;
+using Windows.UI.ViewManagement;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -47,11 +48,15 @@ namespace GitHub_Explorer
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
+        StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+
         private RepositoryInfoNaviParam naviParam;
 
         public RepositoryInfoPage()
         {
             this.InitializeComponent();
+
+            this.NavigationCacheMode = NavigationCacheMode.Required;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -125,13 +130,17 @@ namespace GitHub_Explorer
         {
             try
             {
+                statusBar.ProgressIndicator.Text = "Fetching repository infomation...";
+                statusBar.ProgressIndicator.ShowAsync();
                 var IssuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
                 this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
             }
             catch(Exception e)
             { }
             finally
-            { }
+            {
+                statusBar.ProgressIndicator.HideAsync();
+            }
             return;
         }
 
