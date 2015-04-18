@@ -21,6 +21,7 @@ using Octokit.Internal;
 using Octokit.Reflection;
 using GitHub_Explorer.Service;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 
 // コンテンツ ダイアログ項目テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -29,6 +30,8 @@ namespace GitHub_Explorer
     public sealed partial class SignInContentDialog : ContentDialog
     {
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+
+        StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
 
         public SignInContentDialog()
         {
@@ -42,6 +45,8 @@ namespace GitHub_Explorer
 
             if (username.Text != "" && password.Password != "")
             {
+                statusBar.ProgressIndicator.Text = "Signing in...";
+                statusBar.ProgressIndicator.ShowAsync();
                 github = new GitHubClientService();
                 Credentials credentials = new Credentials(username.Text, password.Password);
                 message = await github.SignIn(credentials);
@@ -50,6 +55,8 @@ namespace GitHub_Explorer
             {
                 message = this.resourceLoader.GetString("SignInInputErrorMsg");
             }
+
+            statusBar.ProgressIndicator.HideAsync();
 
             var messageDialog = new MessageDialog(message);
 
