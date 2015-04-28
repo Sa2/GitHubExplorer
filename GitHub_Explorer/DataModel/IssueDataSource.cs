@@ -97,10 +97,16 @@ namespace GitHub_Explorer.Data
                                                     issue.HtmlUrl,
                                                     issue.User,
                                                     issue.CreatedAt,
-                                                    issue.ClosedAt));
+                                                    issue.ClosedAt,
+                                                    GenerateDescriptionForList(issue.Number, issue.CreatedAt, issue.User.Login)));
             }
             this.Groups.Clear();
             this.Groups.Add(group);
+        }
+
+        private string GenerateDescriptionForList(int number, DateTimeOffset createdAt, string user)
+        {
+            return "#" + number.ToString() + " opened " + createdAt.LocalDateTime.ToString() + " by " + user;
         }
     }
 }

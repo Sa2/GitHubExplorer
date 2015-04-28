@@ -18,7 +18,7 @@ namespace GitHub_Explorer.Data
     public class IssueDataItem
     {
         public IssueDataItem(int number, string title, string body, ItemState state, IReadOnlyList<Label> labels,
-                             Milestone milestone, int comments, User assignee, Uri htmlUrl, User user, DateTimeOffset createdAt, DateTimeOffset? closedAt)
+                             Milestone milestone, int comments, User assignee, Uri htmlUrl, User user, DateTimeOffset createdAt, DateTimeOffset? closedAt, string descriptionForList)
         {
             this.Number = number;
             this.Title = title;
@@ -32,6 +32,7 @@ namespace GitHub_Explorer.Data
             this.User = user;
             this.CreatedAt = createdAt;
             this.ClosedAt = closedAt;
+            this.DescriptionForList = descriptionForList;
 
         }
 
@@ -47,6 +48,7 @@ namespace GitHub_Explorer.Data
         public User User { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
         public DateTimeOffset? ClosedAt { get; private set; }
+        public string DescriptionForList { get; private set; }
 
         public override string ToString()
         {
