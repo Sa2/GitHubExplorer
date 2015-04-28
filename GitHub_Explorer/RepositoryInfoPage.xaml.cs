@@ -128,12 +128,25 @@ namespace GitHub_Explorer
 
         private async Task LoadRepositoryInfo(string owner, string name)
         {
+            IssueDataGroup issuesDataGroup;
             try
             {
                 statusBar.ProgressIndicator.Text = "Fetching repository infomation...";
                 statusBar.ProgressIndicator.ShowAsync();
-                var IssuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
-                this.DefaultViewModel[IssuesGroupName] = IssuesDataGroup;
+                issuesDataGroup = await IssueDataSource.GetGroupAsync(resourceLoader.GetString("PivotGroupIdIssues"), owner, name);
+                this.DefaultViewModel[IssuesGroupName] = issuesDataGroup;
+
+                if (issuesDataGroup.Issues.Count == 0)
+                {
+                    noIssuesAlert.Text = this.resourceLoader.GetString("NoIssuesAlert");
+                    noIssuesAlert.Visibility = Visibility.Visible;
+                    issuesList.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    noIssuesAlert.Visibility = Visibility.Collapsed;
+                    issuesList.Visibility = Visibility.Visible;
+                }
             }
             catch(Exception e)
             { }
@@ -141,6 +154,7 @@ namespace GitHub_Explorer
             {
                 statusBar.ProgressIndicator.HideAsync();
             }
+
             return;
         }
 

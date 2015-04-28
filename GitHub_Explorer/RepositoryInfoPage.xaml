@@ -32,31 +32,35 @@
                 Header="first"
                 DataContext="{Binding IssueGroup}"
                 CommonNavigationTransitionInfo.IsStaggerElement="True" >
-                <!--テキストの折り返しを行う 2 行リスト-->
-                <ListView
-                    ItemsSource="{Binding Issues}"
-                    IsItemClickEnabled="True"
-                    ItemClick="ItemView_ItemClick"
-                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,9.5">
-                                <TextBlock
+                <StackPanel>
+                    <TextBlock x:Uid="NoIssuesAlert" Name="noIssuesAlert" Foreground="Gray" FontSize="{StaticResource TextStyleExtraExtraLargeFontSize}" />
+                    <!--テキストの折り返しを行う 2 行リスト-->
+                    <ListView
+                        Name="issuesList"
+                        ItemsSource="{Binding Issues}"
+                        IsItemClickEnabled="True"
+                        ItemClick="ItemView_ItemClick"
+                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,9.5">
+                                    <TextBlock
                                     Text="{Binding Title}"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
                                     Margin="0,0,19,0"/>
-                                <TextBlock
+                                    <TextBlock
                                     Text="{Binding Body}"
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
                                     Style="{ThemeResource ListViewItemContentTextBlockStyle}"
                                     Margin="0,0,19,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
             </PivotItem>
         </Pivot>
 
