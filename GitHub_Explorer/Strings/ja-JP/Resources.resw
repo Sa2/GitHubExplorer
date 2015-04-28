@@ -136,7 +136,7 @@
     <value>項目のタイトル: {0}</value>
   </data>
   <data name="NoIssuesAlert" xml:space="preserve">
-    <value>Issueがありません</value>
+    <value>Issueはありません</value>
   </data>
   <data name="Pivot.Title" xml:space="preserve">
     <value>GitHub Explorer</value>
