@@ -32,35 +32,37 @@
                 Header="first"
                 DataContext="{Binding IssueGroup}"
                 CommonNavigationTransitionInfo.IsStaggerElement="True" >
-                <StackPanel>
-                    <TextBlock x:Uid="NoIssuesAlert" Name="noIssuesAlert" Foreground="Gray" FontSize="{StaticResource TextStyleExtraExtraLargeFontSize}" />
-                    <!--テキストの折り返しを行う 2 行リスト-->
+
+                <!--テキストの折り返しを行う 2 行リスト-->
+                <Grid>
                     <ListView
-                        Name="issuesList"
-                        ItemsSource="{Binding Issues}"
-                        IsItemClickEnabled="True"
-                        ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                    Name="issuesList"
+                    ItemsSource="{Binding Issues}"
+                    IsItemClickEnabled="True"
+                    ItemClick="ItemView_ItemClick"
+                    ContinuumNavigationTransitionInfo.ExitElementContainer="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,9.5">
                                     <TextBlock
-                                    Text="{Binding Title}"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="0,0,19,0"/>
+                                Text="{Binding Title}"
+                                Pivot.SlideInAnimationGroup="1"
+                                CommonNavigationTransitionInfo.IsStaggerElement="True"
+                                Style="{ThemeResource ListViewItemTextBlockStyle}"
+                                Margin="0,0,19,0"/>
                                     <TextBlock
-                                    Text="{Binding DescriptionForList}"
-                                    Pivot.SlideInAnimationGroup="2" 
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    Margin="0,0,19,0" Foreground="Gray"/>
+                                Text="{Binding DescriptionForList}"
+                                Pivot.SlideInAnimationGroup="2" 
+                                CommonNavigationTransitionInfo.IsStaggerElement="True" 
+                                Style="{ThemeResource ListViewItemContentTextBlockStyle}"
+                                Margin="0,0,19,0" Foreground="Gray"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
+                    <TextBlock x:Uid="NoIssuesAlert" Name="noIssuesAlert" Foreground="Gray" FontSize="{StaticResource TextStyleExtraExtraLargeFontSize}" Visibility="Collapsed" />
+                </Grid>
+                
             </PivotItem>
         </Pivot>
 
