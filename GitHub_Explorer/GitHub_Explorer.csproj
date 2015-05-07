@@ -109,7 +109,7 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="DataModel\IssueRelativeDataItem.cs" />
+    <Compile Include="DataModel\IssueDataItem.cs" />
     <Compile Include="DataModel\IssueCommentDataSource.cs" />
     <Compile Include="DataModel\IssueDataSource.cs" />
     <Compile Include="DataModel\RepositoryListDataSource.cs" />

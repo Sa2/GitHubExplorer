@@ -31,6 +31,7 @@ using GitHub_Explorer.NavigationParam;
 using Windows.System.Threading;
 using Newtonsoft.Json;
 using Windows.UI.ViewManagement;
+using Windows.UI;
 
 // 空白ページのアイテム テンプレートについては、http://go.microsoft.com/fwlink/?LinkID=390556 を参照してください
 
@@ -130,6 +131,7 @@ namespace GitHub_Explorer
                 statusBar.ProgressIndicator.Text = "Fetching issues...";
                 statusBar.ProgressIndicator.ShowAsync();
                 var IssueInfoDataItem = await IssueDataSource.GetIssueAsync(owner, name, number);
+                SettingState(IssueInfoDataItem.State);
                 this.DefaultViewModel[IssueInfoGroupName] = IssueInfoDataItem;
             }
             catch (Exception e)
@@ -139,6 +141,31 @@ namespace GitHub_Explorer
                 statusBar.ProgressIndicator.HideAsync();
             }
             return;
+        }
+
+        private void SettingState(ItemState state)
+        {
+            switch(state)
+            {
+                case ItemState.Open:
+                    StateSetter("Opened", Colors.Green);
+                    break;
+                case ItemState.Closed:
+                    StateSetter("Closed", Colors.Red);
+                    break;
+                case ItemState.All:
+                    StateSetter("All", Colors.Gray);
+                    break;
+                default:
+                    StateSetter("None", Colors.Gray);
+                    break;
+            }
+        }
+
+        private void StateSetter(string text, Color color)
+        {
+            State.Text = text;
+            State.Foreground = new SolidColorBrush(color);
         }
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)

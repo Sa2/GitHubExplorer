@@ -32,11 +32,23 @@
                 DataContext="{Binding IssueInfoGroup}"
                 CommonNavigationTransitionInfo.IsStaggerElement="True" >
                 <!-- タイトル パネル -->
-                <StackPanel Grid.Row="0" Margin="0,0,0,0">
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,-6.5,0,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
-                    <TextBlock Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" />
-                </StackPanel>
-
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                        
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="Title" Text="{Binding Title}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,-6.5,0,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" Grid.Row="0" />
+                        <TextBlock x:Name="State" Text="" Style="{StaticResource BodyTextBlockStyle}" Margin="0,-6.5,0,5" Grid.Row="1"/>
+                        <TextBlock x:Name="Discription" Text="{Binding Description}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,-6.5,0,26.5" Grid.Row="2"/>
+                        <TextBlock x:Name="Body" Text="{Binding Body}" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Margin="0,-6.5,0,26.5" Grid.Row="3"/>
+                    </Grid>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>
